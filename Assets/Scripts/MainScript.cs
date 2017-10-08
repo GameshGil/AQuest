@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public enum States
 {
-    startRoom,
-    washer,
-    pentagon
+    strangeRoom,
+    rosmarus,
+    anotherDimension,
+    goodEnd
 }
 
 public class MainScript : MonoBehaviour 
@@ -16,41 +17,65 @@ public class MainScript : MonoBehaviour
 
     private States myState;
 
+    public Image myImage;
+
+    public Sprite[] allImages;
+    
+	// Use this for initialization
 	void Start () 
 	{
-        myState = States.startRoom;
+        myState = States.strangeRoom;
 	}
 	
-	void Update () 
-	{
-        if (myState == States.startRoom)
-            StartRoomFunc();
-
-        if (myState == States.washer)
-            WasherFunc();
-
-        if (myState == States.pentagon)
-            PentagonFunc();
-	}
-
-    private void StartRoomFunc()
+	// Update is called once per frame
+	void Update ()
     {
-        mainText.text = "Первая сцена - вы проснулись. \nПодойти к умывальнику - Q.\nПопытаться взломать Пентагон - E";
+        myImage.sprite = allImages[(int) myState];
+
+        if (myState == States.strangeRoom)
+            StrangeRoom();
+        if (myState == States.rosmarus)
+            Rosmarus();
+        if (myState == States.anotherDimension)
+            AnotherDimension();
+        if (myState == States.goodEnd)
+            GoodEnd();
+    }
+
+    private void StrangeRoom()
+    {
+        mainText.text = "Вы проснулись у себя дома. " +
+            "Чтоб перейти в комнату к любимому моржу, нажмите Q. " +
+            "Для того, чтоб выйти из дома, нажмите W.";
 
         if (Input.GetKeyDown(KeyCode.Q))
-            myState = States.washer;
-
-        if (Input.GetKeyDown(KeyCode.E))
-            myState = States.pentagon;
+            myState = States.rosmarus;
+        if (Input.GetKeyDown(KeyCode.W))
+            myState = States.goodEnd;
     }
 
-    private void WasherFunc()
+    private void Rosmarus()
     {
-        mainText.text = "Вы у умывальника. Вместо вашего лица в отражении на вас глядит кот.";
+        mainText.text = "Подойдя к двери, ведущей в комнату моржа, вы заметили, " +
+            "что из замочной скважины идет странное, темное свечение. " +
+            "Отойти от двери - S. Набравшись храбрости, распахнуть дверь - D.";
+        if (Input.GetKeyDown(KeyCode.S))
+            myState = States.strangeRoom;
+        if (Input.GetKeyDown(KeyCode.D))
+            myState = States.anotherDimension;
+    }
+    
+    private void GoodEnd()
+    {
+        mainText.text = "К счастью для вас, здание было покинуто. " +
+            "Только снаружи стало понятно, что это совсем не ваш дом, а утроба чудища.";
     }
 
-    private void PentagonFunc()
+    private void AnotherDimension()
     {
-        mainText.text = "Вы попытались взломать пентагон. Неудачно, что было ожидаемо. Однако за такое отправили по вашему адресу ракету. Жизнь окончена.";
+        mainText.text = "Порыв ветра втолкнул вас. Вы оказались в незнакомом вам месте. " +
+            "Вас накрыло ощущение, что во всем, что вас окружало, что-то было не так. " +
+            "Вы осознали, что предметы не подчинялись законам земной физики - вы оказались где угодно, " +
+            "но не на Земле, и обречены вечно скитаться по темным уголкам этого недружелюбного мира!";
     }
 }
